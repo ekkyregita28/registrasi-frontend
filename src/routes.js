@@ -2,7 +2,8 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DefaultLayout } from "./layouts";
+import { DefaultLayout, GuestLayout} from "./layouts";
+
 
 // Route Views
 import BlogOverview from "./views/BlogOverview";
@@ -12,6 +13,13 @@ import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
+import HakAkses from "./views/HakAkses";
+import Provinsi from "./views/Provinsi";
+import Daerah from "./views/Daerah";
+import Login from "./views/Login";
+import Tracking from "./views/Tracking";
+import ListHistory from "./views/ListHistory";
+import Position from "./views/Position";
 
 export default [
   {
@@ -54,5 +62,40 @@ export default [
     path: "/blog-posts",
     layout: DefaultLayout,
     component: BlogPosts
+  },
+  {
+    path: "/hak-akses",
+    layout: DefaultLayout,
+    component: HakAkses
+  },
+  {
+    path: "/provinsi",
+    layout: DefaultLayout,
+    component: Provinsi
+  },
+  {
+    path: "/daerah",
+    layout: DefaultLayout,
+    component: Daerah
+  },
+  {
+    path: "/list-history",
+    layout: DefaultLayout,
+    component: ListHistory
+  },
+  {
+    path: "/login",
+    layout: GuestLayout,
+    component: Login
+  },
+  {
+    path: "/tracking",
+    layout: GuestLayout,
+    component: Tracking
+  },
+  {
+    path: "/position",
+    layout: DefaultLayout,
+    component: Position
   }
 ];

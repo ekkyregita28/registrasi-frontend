@@ -1,3 +1,4 @@
 import DefaultLayout from "./Default";
+import GuestLayout from "./Guest";
 
-export { DefaultLayout };
+export { DefaultLayout, GuestLayout };
