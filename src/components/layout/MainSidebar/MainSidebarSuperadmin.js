@@ -5,7 +5,7 @@ import { Col } from "shards-react";
 
 import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarSearch from "./SidebarSearch";
-import SidebarNavItems from "./SidebarNavItems";
+import SidebarNavItemsSuperadmin from "./SidebarNavItemsSuperadmin";
 
 import { Store } from "../../../flux";
 import axios from "axios";
@@ -17,7 +17,7 @@ class MainSidebar extends React.Component {
 
     this.state = {
       menuVisible: false,
-      sidebarNavItems: Store.getSidebarItems()
+      sidebarNavItems: Store.getSidebarItemsSuperadmin()
     };
 
     this.onChange = this.onChange.bind(this);
@@ -60,7 +60,9 @@ class MainSidebar extends React.Component {
       >
         <SidebarMainNavbar hideLogoText={this.props.hideLogoText} />
         <SidebarSearch />
-        <SidebarNavItems />
+        {
+          (<SidebarNavItemsSuperadmin />)
+        }
       </Col>
     );
   }

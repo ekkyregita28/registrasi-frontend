@@ -1,28 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox, NavItem } from "shards-react";
+import { Container, Row, Col, Card, CardHeader, CardBody, CardFooter} from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import AddPositionForm from "../components/components-overview/AddPositionForm";
-import { GETALLPOSITION } from '../utils/url'
+import { GETALLPOSITION} from '../utils/url'
 import axios from 'axios';
 
 const Position = () => {
   const [data,setData]=useState([]);
   var number = 1;
+  const [pagination_data, setPaginationData] = useState([]);
+  const [position, setPosition] = useState("");
   useEffect(()=>{
       axios
       .get(GETALLPOSITION)
       .then((res) => {
-        const result = res.data.data;
+        const result = res.data.data.data;
+        const pagResult = res.data.data;
+        setPaginationData(pagResult);
         setData(result);
     });
   },[])
+
+  function handlerNextPage() {
+    axios
+      .get(pagination_data.next_page_url)
+      .then((res) => {
+        const result = res.data.data.data;
+        const pagResult = res.data.data;
+        setPaginationData(pagResult);
+        setData(result);
+      });
+  }
+
+  function handlerPrevPage() {
+    axios
+      .get(pagination_data.prev_page_url)
+      .then((res) => {
+        const result = res.data.data.data;
+        const pagResult = res.data.data;
+        setPaginationData(pagResult);
+        setData(result);
+      });
+  }
   
   return(
     <Container fluid className="main-content-container px-4">
     {/* Page Header */}
     <Row noGutters className="page-header py-4">
-      <PageTitle sm="4" title="Halaman Posisi" subtitle="" className="text-sm-left" />
+      <PageTitle sm="4"  className="text-sm-left" />
     </Row>
 
     {/* Default Light Table */}
@@ -30,23 +56,17 @@ const Position = () => {
       <Col lg="12">
         <Card small className="mb-4">
           <CardHeader className="border-bottom">
-            <h6 className="m-0">List Provinsi</h6>
+            <h5 className="m-0">List Position</h5>
           </CardHeader>
           <CardBody className="p-0 pb-3">
             <table className="table mb-0">
               <thead className="bg-light">
                 <tr>
                   <th scope="col" className="border-0">
-                    #
+                    ID
                   </th>
                   <th scope="col" className="border-0">
                     Nama Posisi
-                  </th>
-                  <th scope="col" className="border-0">
-                    Edit
-                  </th>
-                  <th scope="col" className="border-0">
-                    Delete
                   </th>
                 </tr>
               </thead>
@@ -55,16 +75,22 @@ const Position = () => {
                   
                   data.map((item)=>
                     <tr>
-                      <td>{number ++}</td>
+                      <td>{item.id}</td>
                       <td>{item.nama_posisi}</td>
-                      <td><a href="#">Edit</a></td>
-                      <td><a href="#">Delete</a></td>
                     </tr>
                     )
                 }
               </tbody>
             </table>
           </CardBody>
+          <CardFooter className="ml-auto mr-2">
+              <nav>
+                <ul class="pagination justify-content-end">
+                  <li class="page-item"><a href="#" onClick={() => handlerPrevPage()} class="page-link">Previous</a></li>
+                  <li class="page-item"><a href="#" onClick={() => handlerNextPage()} class="page-link">Next</a></li>
+                </ul>
+              </nav>
+            </CardFooter>
         </Card>
       </Col>
       <Col lg="8" className="mb-4">

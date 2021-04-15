@@ -6,12 +6,12 @@ import { Store } from "../../../flux";
 import { GETUSER } from '../../../utils/url'
 import axios from 'axios';
 
-class SidebarNavItems extends React.Component {
+class SidebarNavItemsSuperadmin extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      navItems: Store.getSidebarItems()
+      navItems: Store.getSidebarItemsSuperadmin()
     };
 
     this.onChange = this.onChange.bind(this);
@@ -47,4 +47,4 @@ class SidebarNavItems extends React.Component {
   }
 }
 
-export default SidebarNavItems;
+export default SidebarNavItemsSuperadmin;

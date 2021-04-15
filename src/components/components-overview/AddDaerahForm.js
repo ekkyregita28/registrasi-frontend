@@ -10,7 +10,7 @@ import {
   FormSelect,
   Button
 } from "shards-react";
-import { GETALLPROVINSI } from '../../utils/url'
+import { GETALLPROVINSIWOPAG } from '../../utils/url'
 import { CREATEDAERAH } from '../../utils/url'
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ const AddDaerahForm = () => {
   
   useEffect(()=>{
     axios
-      .get(GETALLPROVINSI)
+      .get(GETALLPROVINSIWOPAG)
       .then((res) => {
         const result = res.data.data;
         setData(result);

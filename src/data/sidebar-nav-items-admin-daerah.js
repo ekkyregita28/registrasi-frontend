@@ -7,6 +7,12 @@ export default function() {
       htmlAfter: ""
     },
     {
+      title: "Buat Pengajuan Registrasi",
+      to: "/addMember",
+      htmlBefore: '<i class="material-icons">add</i>',
+      htmlAfter: ""
+    },
+    {
       title: "List Pengajuan Registrasi",
       to: "/verifRegistrasi",
       htmlBefore: '<i class="material-icons">note_add</i>',
@@ -29,6 +35,6 @@ export default function() {
       to: "/allMembers",
       htmlBefore: '<i class="material-icons">wysiwyg</i>',
       htmlAfter: ""
-    },
+    }
   ];
 }
