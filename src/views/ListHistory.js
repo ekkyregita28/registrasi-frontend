@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from "shards-react";
+import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox, func } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import { GETLISTHISTORY, GETPOSITIONBYID } from '../utils/url'
@@ -11,25 +11,20 @@ const ListHistory = () => {
   var number = 1;
   var increment = 0;
   useEffect(() => {
-    axios
-      .get(GETLISTHISTORY + "/" + localStorage.getItem("member"))
-      .then((res) => {
-        const result = res.data.data;
-        setData(result);
-        var n = [];
-        for (let i = 0; i < result.length; i++) {
-          axios
-            .get(GETPOSITIONBYID + "/" + result[i].status)
-            .then((res) => {
-              const hasil = res.data.data.nama_posisi;
-              n.push(hasil);
-              if (i == (result.length - 1)) {
-                setPosition(n);
-              }
-            });
+    async function fetchData() {
+      const listResult = await (await axios.get(GETLISTHISTORY + "/" + localStorage.getItem("member"))).data.data
+      setData(listResult)
+      var n = [];
+      for (let i = 0; i < listResult.length; i++) {
+        const posResult = await (await axios.get(GETPOSITIONBYID + "/" + listResult[i].status)).data.data.nama_posisi
+        n.push(posResult)
+        if (i == (listResult.length - 1)) {
+          setPosition(n);
         }
-      });
-  },[])
+      }
+    }
+   fetchData()
+  }, [])
   return (
     <Container fluid className="main-content-container px-4">
       {/* Page Header */}

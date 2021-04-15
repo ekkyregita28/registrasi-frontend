@@ -12,52 +12,41 @@ const Tables = () => {
   const [recent_user,setUser]=useState("");
   const [provinsi,setProvinsi]=useState("");
   const [daerah,setDaerah]=useState("");
+  const [pagination_data, setPaginationData]=useState("");
   const history = useHistory();
   var number = 1;
   var incrementa = 0;
   var incrementb = 0;
   useEffect(()=>{
-      axios
-      .get(GETUSER + "/" + localStorage.getItem("user"))
-      .then((res) => {
-        const result = res.data.data;
-        setUser(result);
-        axios
-          .get(GETPOSITION + "/" + res.data.data.position_id)
-          .then((res) => {
-            const hasil = res.data.data.nama_posisi;
-            setPosition(hasil);
-        });
-    });
-    
-    axios
-      .get(GETALLMEMBERBYADMIN + "/" + localStorage.getItem("user"))
-      .then((res) => {
-        const result = res.data;
-        setData(result);
-        var n = [];
-        var m = [];
-        for(let i=0; i< result.length; i++){
-          axios
-          .get(GETPROVINSIBYID + "/" + result[i].provinsi_id)
-          .then((res)=>{
-            const hasil = res.data.data.nama_provinsi;
-              n.push(hasil);
-              if(i == (result.length-1)){
-                setProvinsi(n);
-              }
-          });
-          axios
-          .get(GETDAERAHBYID + "/" + result[i].daerah_id)
-          .then((res)=>{
-            const hasil = res.data.data.nama_daerah;
-              m.push(hasil);
-              if(i == (result.length-1)){
-                setDaerah(m);
-              }
-          });
+    async function fetchData() {
+      const userRes = await (await axios.get(GETUSER + "/" + localStorage.getItem("user"))).data.data
+      setUser(userRes)
+
+      const posRes = await (await axios.get(GETPOSITION + "/" + userRes.position_id)).data.data.nama_posisi
+      setPosition(posRes)
+
+      const memberPagRes = await (await axios.get(GETALLMEMBERBYADMIN + "/" + localStorage.getItem("user"))).data
+      const memberRes = memberPagRes.data
+      setPaginationData(memberPagRes)
+      setData(memberRes)
+      var n = [];
+      var m = [];
+      for (let i = 0; i < memberRes.length; i++) {
+        const provRes = await (await axios.get(GETPROVINSIBYID + "/" + memberRes[i].provinsi_id)).data.data.nama_provinsi
+        n.push(provRes)
+        if (i == (memberRes.length - 1)) {
+          setProvinsi(n);
         }
-    });
+
+        const daerahRes = await (await axios.get(GETDAERAHBYID + "/" + memberRes[i].daerah_id)).data.data.nama_daerah
+        m.push(daerahRes)
+        if (i == (memberRes.length - 1)) {
+          setDaerah(m);
+        }  
+      }
+    }
+
+    fetchData()
   },[])
   function redirectToAddMember() {
     history.push("/addMember")
